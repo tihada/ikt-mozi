@@ -1,9 +1,8 @@
 import random
-#sorok: 10 - folyoso - 10 
+
 nezoter = []
-vasarolt = 0
-talaltsor = 0
 def kiir_nezoter():
+    print("Nézőtér\nF = felnőtt jegy; D = diák/nyugdíjas jegy; G = gyermek jegy; U = üres szék")
     for i in range(len(nezoter)-1):
         print(i+1, nezoter[i])
 
@@ -19,34 +18,67 @@ def feltolt():
         nezoter.append(sor)
     kiir_nezoter()
 
-def mellett():
-    kell = vasarolt
+def mellett(kell):
     for i in range(len(nezoter)-1):
         sor = nezoter[i]
         talaltures = 0
-        print("sor", i)
         for szek in sor:
-            
             if szek == "U":
                 talaltures += 1
             else:
                 talaltures = 0
+            
             if talaltures == kell:
-                return i
-                
-            
-            
+                return i+1
+    return 0
 
 def vasarlas():
-    print("Hány jegyet szeretne vásárolni? (2-5 között): ")
+    print("Hány jegyet szeretne vásárolni? (2-5 között): ", end="")
     vasarolt = int(input())
     if vasarolt < 2 or vasarolt > 5:
-        vasarlas()
-    
+        while vasarolt < 2 or vasarolt > 5:
+            print("Kérem 2 és 5 között legyen a jegyek száma! ", end="")
+            vasarolt = int(input())
+    return vasarolt
+
+def szekszamlalo():
+    osszeg = 0
+    ures = 0
+    teljesaru = 0
+    for sor in nezoter:
+        for szek in sor:
+            if szek == "U":
+                ures += 1
+            elif szek == "F":
+                osszeg += 2500
+                teljesaru +=1
+            elif szek == "D":
+                osszeg += 2100
+            elif szek == "G":
+                osszeg += 1300
+    return [osszeg, ures, teljesaru]
+
+def kihasznSzamolo(ures):
+    return round(((300-ures) / 300)*100, 2)
 
 def main():
     feltolt()
-    vasarlas()
-    print(mellett())
+    vasarolt = vasarlas()
+    talaltsor = mellett(vasarolt)
+
+    if talaltsor == 0:
+        print(f"Sajnos nincs olyan sor ahol {vasarolt}db szék egymás mellett szabad lenne.")
+    else:
+        print(f"A {talaltsor}. sorban van egymás mellett {vasarolt}db üres szék.")
+
+    stat = szekszamlalo()
+
+    print(f"A mozi bevétele erre az előadásra: {stat[0]}Ft")
+    
+    kihasznaltsag = kihasznSzamolo(stat[1])
+
+    print(f"A terem kihasználtsága ezen az előadáson: {kihasznaltsag}%")
+
+    print(f"{stat[2]}db teljes árú jegyet értékesítettek.")
 
 main()
