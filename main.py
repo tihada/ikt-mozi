@@ -2,12 +2,12 @@ import random
 
 nezoter = []
 def kiir_nezoter():
-    print("Nézőtér\nF = felnőtt jegy; D = diák/nyugdíjas jegy; G = gyermek jegy; U = üres szék")
-    for i in range(len(nezoter)-1):
+    print("Nézőtér\nF = felnőtt jegy; D = diák/nyugdíjas jegy; G = gyermek jegy; U = üres szék; T = folyosó")
+    for i in range(len(nezoter)):
         print(i+1, nezoter[i])
 
 def feltolt():
-    for i in range(16):
+    for i in range(15):
         sor = []
         for i in range(0, 21):
             if i == 10:
@@ -19,7 +19,7 @@ def feltolt():
     kiir_nezoter()
 
 def mellett(kell):
-    for i in range(len(nezoter)-1):
+    for i in range(len(nezoter)):
         sor = nezoter[i]
         talaltures = 0
         for szek in sor:
@@ -34,11 +34,14 @@ def mellett(kell):
 
 def vasarlas():
     print("Hány jegyet szeretne vásárolni? (2-5 között): ", end="")
-    vasarolt = int(input())
+    try:
+        vasarolt = int(input())
+    except:
+        print("Kérem csak számokat adjon meg!")
+        return vasarlas()
     if vasarolt < 2 or vasarolt > 5:
-        while vasarolt < 2 or vasarolt > 5:
-            print("Kérem 2 és 5 között legyen a jegyek száma! ", end="")
-            vasarolt = int(input())
+        print("Kérem 2 és 5 között legyen a jegyek száma!")
+        return vasarlas()
     return vasarolt
 
 def szekszamlalo():
